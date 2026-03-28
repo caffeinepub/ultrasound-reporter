@@ -6,7 +6,12 @@ import {
   Shield,
 } from "lucide-react";
 
-type View = "dashboard" | "new-report" | "edit-report" | "view-report";
+type View =
+  | "dashboard"
+  | "new-report"
+  | "edit-report"
+  | "view-report"
+  | "settings";
 
 interface SidebarProps {
   activeView: View;
@@ -75,7 +80,13 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
       <div className="px-3 pb-4 border-t border-sidebar-border pt-4">
         <button
           type="button"
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-sidebar-primary hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground transition-colors"
+          data-ocid="nav.settings.link"
+          onClick={() => onNavigate("settings")}
+          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
+            activeView === "settings"
+              ? "bg-sidebar-accent text-sidebar-accent-foreground"
+              : "text-sidebar-primary hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
+          }`}
         >
           <Settings className="w-4 h-4 flex-shrink-0" />
           Settings

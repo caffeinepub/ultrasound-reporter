@@ -210,9 +210,6 @@ importers:
       '@types/node':
         specifier: ^20.9.0
         version: 20.19.24
-      '@types/qrcode.react':
-        specifier: ^3.0.0
-        version: 3.0.0(react@19.1.1)
       '@types/react':
         specifier: ~19.1.0
         version: 19.1.17
@@ -1698,10 +1695,6 @@ packages:
 
   '@types/offscreencanvas@2019.7.3':
     resolution: {integrity: sha512-ieXiYmgSRXUDeOntE1InxjWyvEelZGP63M+cGuquuRLuIKKT1osnkXjxev9B7d1nXSug5vpunx+gNlbVxMlC9A==}
-
-  '@types/qrcode.react@3.0.0':
-    resolution: {integrity: sha512-VPHYhnDfvt4LjlWajpYWRBVqmftEEza3GJVhe8sS5Wew0n4nTkg3+2MYunAiU6t04AZt0s/hkkMovefWeENjAQ==}
-    deprecated: This is a stub types definition. qrcode.react provides its own type definitions, so you do not need this installed.
 
   '@types/react-dom@19.1.11':
     resolution: {integrity: sha512-3BKc/yGdNTYQVVw4idqHtSOcFsgGuBbMveKCOgF8wQ5QtrYOc3jDIlzg3jef04zcXFIHLelyGlj0T+BJ8+KN+w==}
@@ -4347,12 +4340,6 @@ snapshots:
       undici-types: 6.21.0
 
   '@types/offscreencanvas@2019.7.3': {}
-
-  '@types/qrcode.react@3.0.0(react@19.1.1)':
-    dependencies:
-      qrcode.react: 4.2.0(react@19.1.1)
-    transitivePeerDependencies:
-      - react
 
   '@types/react-dom@19.1.11(@types/react@19.1.17)':
     dependencies:

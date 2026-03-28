@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Dashboard } from "./components/Dashboard";
 import { ReportForm } from "./components/ReportForm";
+import { Settings } from "./components/Settings";
 import { Sidebar } from "./components/Sidebar";
 import { ViewReport } from "./components/ViewReport";
 import { useActor } from "./hooks/useActor";
@@ -10,7 +11,12 @@ import type { Report } from "./hooks/useQueries";
 
 const queryClient = new QueryClient();
 
-type View = "dashboard" | "new-report" | "edit-report" | "view-report";
+type View =
+  | "dashboard"
+  | "new-report"
+  | "edit-report"
+  | "view-report"
+  | "settings";
 
 function AppInner() {
   const [view, setView] = useState<View>("dashboard");
@@ -139,6 +145,7 @@ function AppInner() {
             onEdit={handleEditReport}
           />
         )}
+        {view === "settings" && <Settings />}
       </main>
 
       <Toaster />
