@@ -88,8 +88,26 @@ actor {
     },
   ];
 
-  var nextReportId = 1;
+  stable var nextReportId : Nat = 1;
+  stable var stableReportEntries : [(Nat, Report)] = [];
+
   let reports = Map.empty<Nat, Report>();
+
+  // Restore from stable storage on upgrade
+  do {
+    for ((k, v) in stableReportEntries.vals()) {
+      reports.add(k, v);
+      if (k >= nextReportId) { nextReportId := k + 1 };
+    };
+  };
+
+  system func preupgrade() {
+    stableReportEntries := reports.entries().toArray();
+  };
+
+  system func postupgrade() {
+    stableReportEntries := [];
+  };
 
   public shared ({ caller }) func createReport(
     patientName : Text,

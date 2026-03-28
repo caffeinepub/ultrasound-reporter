@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Dashboard } from "./components/Dashboard";
+import { Header } from "./components/Header";
 import { ReportForm } from "./components/ReportForm";
 import { Settings } from "./components/Settings";
 import { Sidebar } from "./components/Sidebar";
@@ -17,6 +18,14 @@ type View =
   | "edit-report"
   | "view-report"
   | "settings";
+
+const VIEW_TITLES: Record<View, string> = {
+  dashboard: "Dashboard",
+  "new-report": "New Report",
+  "edit-report": "Edit Report",
+  "view-report": "View Report",
+  settings: "Settings",
+};
 
 function AppInner() {
   const [view, setView] = useState<View>("dashboard");
@@ -118,34 +127,37 @@ function AppInner() {
         }}
       />
 
-      <main className="flex-1 ml-60 min-h-screen overflow-y-auto">
-        {view === "dashboard" && (
-          <Dashboard
-            onNewReport={handleNewReport}
-            onEditReport={handleEditReport}
-            onViewReport={handleViewReport}
-          />
-        )}
-        {view === "new-report" && (
-          <ReportForm mode="new" onBack={handleBack} onSaved={handleSaved} />
-        )}
-        {view === "edit-report" && selectedReport && (
-          <ReportForm
-            key={String(selectedReport?.id)}
-            mode="edit"
-            initialReport={selectedReport}
-            onBack={handleBack}
-            onSaved={handleSaved}
-          />
-        )}
-        {view === "view-report" && selectedReport && (
-          <ViewReport
-            report={selectedReport}
-            onBack={handleBack}
-            onEdit={handleEditReport}
-          />
-        )}
-        {view === "settings" && <Settings />}
+      <main className="flex-1 ml-60 min-h-screen flex flex-col">
+        <Header title={VIEW_TITLES[view]} />
+        <div className="flex-1 overflow-y-auto">
+          {view === "dashboard" && (
+            <Dashboard
+              onNewReport={handleNewReport}
+              onEditReport={handleEditReport}
+              onViewReport={handleViewReport}
+            />
+          )}
+          {view === "new-report" && (
+            <ReportForm mode="new" onBack={handleBack} onSaved={handleSaved} />
+          )}
+          {view === "edit-report" && selectedReport && (
+            <ReportForm
+              key={String(selectedReport?.id)}
+              mode="edit"
+              initialReport={selectedReport}
+              onBack={handleBack}
+              onSaved={handleSaved}
+            />
+          )}
+          {view === "view-report" && selectedReport && (
+            <ViewReport
+              report={selectedReport}
+              onBack={handleBack}
+              onEdit={handleEditReport}
+            />
+          )}
+          {view === "settings" && <Settings />}
+        </div>
       </main>
 
       <Toaster />
