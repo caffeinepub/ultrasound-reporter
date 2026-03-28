@@ -12,45 +12,45 @@
 @layer base {
   :root {
     --radius: 0.5rem;
-    /* Main palette - medical navy/blue */
-    --background: 0.962 0.018 220;
-    --foreground: 0.145 0.01 250;
+    /* Medical light theme */
+    --background: 0.975 0.005 220;
+    --foreground: 0.18 0.025 230;
     --card: 1 0 0;
-    --card-foreground: 0.145 0.01 250;
+    --card-foreground: 0.18 0.025 230;
     --popover: 1 0 0;
-    --popover-foreground: 0.145 0.01 250;
-    --primary: 0.36 0.1 240;
-    --primary-foreground: 0.99 0 0;
-    --secondary: 0.93 0.018 220;
-    --secondary-foreground: 0.28 0.01 250;
-    --muted: 0.94 0.012 220;
-    --muted-foreground: 0.5 0.012 250;
-    --accent: 0.92 0.025 220;
-    --accent-foreground: 0.28 0.01 250;
-    --destructive: 0.577 0.245 27.325;
-    --destructive-foreground: 0.985 0 0;
-    --border: 0.92 0.014 220;
-    --input: 0.92 0.014 220;
-    --ring: 0.36 0.1 240;
-    --chart-1: 0.646 0.222 41.116;
-    --chart-2: 0.6 0.118 184.704;
-    --chart-3: 0.398 0.07 227.392;
-    --chart-4: 0.828 0.189 84.429;
-    --chart-5: 0.769 0.188 70.08;
-    /* Sidebar colors: deep navy */
-    --sidebar: 0.27 0.09 240;
-    --sidebar-foreground: 0.9 0.02 220;
-    --sidebar-primary: 0.75 0.04 220;
+    --popover-foreground: 0.18 0.025 230;
+    --primary: 0.48 0.13 216;
+    --primary-foreground: 1 0 0;
+    --secondary: 0.94 0.015 220;
+    --secondary-foreground: 0.25 0.03 230;
+    --muted: 0.95 0.008 220;
+    --muted-foreground: 0.52 0.025 230;
+    --accent: 0.93 0.02 215;
+    --accent-foreground: 0.25 0.04 225;
+    --destructive: 0.52 0.22 28;
+    --destructive-foreground: 1 0 0;
+    --border: 0.88 0.012 220;
+    --input: 0.88 0.012 220;
+    --ring: 0.48 0.13 216;
+    --chart-1: 0.48 0.13 216;
+    --chart-2: 0.58 0.14 178;
+    --chart-3: 0.62 0.16 155;
+    --chart-4: 0.55 0.18 50;
+    --chart-5: 0.52 0.22 28;
+    /* Sidebar */
+    --sidebar: 1 0 0;
+    --sidebar-foreground: 0.18 0.025 230;
+    --sidebar-primary: 0.48 0.13 216;
     --sidebar-primary-foreground: 1 0 0;
-    --sidebar-accent: 0.3 0.08 240;
-    --sidebar-accent-foreground: 0.95 0.02 220;
-    --sidebar-border: 0.32 0.07 240;
-    --sidebar-ring: 0.5 0.08 240;
+    --sidebar-accent: 0.93 0.02 215;
+    --sidebar-accent-foreground: 0.25 0.04 225;
+    --sidebar-border: 0.88 0.012 220;
+    --sidebar-ring: 0.48 0.13 216;
     /* Status colors */
-    --success: 0.88 0.09 150;
-    --success-foreground: 0.28 0.08 150;
-    --warning: 0.92 0.08 50;
-    --warning-foreground: 0.32 0.08 50;
+    --success: 0.52 0.16 155;
+    --success-foreground: 1 0 0;
+    --warning: 0.58 0.18 50;
+    --warning-foreground: 1 0 0;
   }
 
   * {
@@ -59,6 +59,67 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Medical UI utility classes */
+@layer components {
+  .medical-card {
+    background: white;
+    border: 1px solid oklch(0.88 0.012 220);
+    box-shadow: 0 1px 4px rgba(0, 40, 80, 0.07), 0 0 0 0 transparent;
+  }
+
+  .medical-card-hover {
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+
+  .medical-card-hover:hover {
+    border-color: oklch(0.72 0.1 216);
+    box-shadow: 0 2px 12px rgba(0, 100, 180, 0.1);
+  }
+
+  .medical-sidebar {
+    background: white;
+    border-right: 1px solid oklch(0.88 0.012 220);
+    box-shadow: 2px 0 8px rgba(0, 40, 80, 0.06);
+  }
+
+  .medical-button {
+    background: oklch(0.48 0.13 216);
+    color: white;
+    border: 1px solid oklch(0.42 0.14 216);
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .medical-button:hover {
+    background: oklch(0.42 0.14 216);
+    box-shadow: 0 2px 8px rgba(0, 100, 180, 0.25);
+  }
+
+  .medical-badge-normal {
+    background: oklch(0.94 0.06 155);
+    border: 1px solid oklch(0.78 0.12 155);
+    color: oklch(0.38 0.12 155);
+  }
+
+  .medical-badge-abnormal {
+    background: oklch(0.95 0.06 28);
+    border: 1px solid oklch(0.76 0.16 28);
+    color: oklch(0.42 0.18 28);
+  }
+
+  .medical-metric-icon {
+    background: oklch(0.93 0.04 216);
+    border-left: 4px solid oklch(0.48 0.13 216);
+  }
+
+  .medical-row-hover {
+    transition: background 0.12s ease;
+  }
+
+  .medical-row-hover:hover {
+    background: oklch(0.97 0.008 216);
   }
 }
 

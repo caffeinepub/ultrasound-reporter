@@ -109,7 +109,7 @@ function AppInner() {
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-background">
       <Sidebar
         activeView={view}
         onNavigate={(v) => {
@@ -118,7 +118,7 @@ function AppInner() {
         }}
       />
 
-      <main className="flex-1 ml-60 min-h-screen bg-background overflow-y-auto">
+      <main className="flex-1 ml-60 min-h-screen overflow-y-auto">
         {view === "dashboard" && (
           <Dashboard
             onNewReport={handleNewReport}

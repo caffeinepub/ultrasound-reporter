@@ -138,14 +138,12 @@ export function ViewReport({
           <div className="flex items-start justify-between">
             <div>
               <h2 className="text-xl font-bold tracking-tight">
-                SonoReport Pro
+                Dr. Siddique Darr
               </h2>
               <p className="text-sm opacity-80 mt-0.5">
-                Advanced Ultrasound Imaging Centre
+                Housing Sakeem No 01, near DSP office Gujar Khan
               </p>
-              <p className="text-xs opacity-60 mt-1">
-                123 Medical Plaza, Suite 400 · Tel: (555) 123-4567
-              </p>
+              <p className="text-xs opacity-60 mt-1" />
             </div>
             <div className="text-right">
               <div className="text-xs opacity-70 uppercase tracking-wide">
@@ -247,7 +245,7 @@ export function ViewReport({
               })}
             </div>
             <div className="text-xs text-muted-foreground">
-              SonoReport Pro — Confidential Medical Document
+              Dr. Siddique Darr — Confidential Medical Document
             </div>
           </div>
         </div>
