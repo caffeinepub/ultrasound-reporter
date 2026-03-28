@@ -1,4 +1,5 @@
 import {
+  CalendarDays,
   FilePlus,
   FileText,
   LayoutDashboard,
@@ -11,6 +12,7 @@ type View =
   | "new-report"
   | "edit-report"
   | "view-report"
+  | "appointments"
   | "settings";
 
 interface SidebarProps {
@@ -22,6 +24,7 @@ const navItems = [
   { id: "dashboard" as View, label: "Dashboard", icon: LayoutDashboard },
   { id: "new-report" as View, label: "New Report", icon: FilePlus },
   { id: "edit-report" as View, label: "Reports", icon: FileText },
+  { id: "appointments" as View, label: "Appointments", icon: CalendarDays },
 ];
 
 export function Sidebar({ activeView, onNavigate }: SidebarProps) {

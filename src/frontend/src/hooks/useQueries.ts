@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { Report, Template } from "../backend.d";
+import type { Appointment, Report, Template } from "../backend";
 import { useActor } from "./useActor";
 
 export function useListReports() {
@@ -43,7 +43,7 @@ export function useCreateReport() {
       impression: string;
       isNormal: boolean;
     }) =>
-      actor!.createReport(
+      actor!.createReview(
         args.patientName,
         args.patientAge,
         args.patientGender,
@@ -105,4 +105,51 @@ export function useDeleteReport() {
   });
 }
 
-export type { Report, Template };
+export function useListAppointments() {
+  const { actor, isFetching } = useActor();
+  return useQuery<Appointment[]>({
+    queryKey: ["appointments"],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.listAppointments();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useCreateAppointment() {
+  const { actor } = useActor();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (args: {
+      patientName: string;
+      phone: string;
+      address: string;
+      appointmentDate: string;
+      appointmentTime: string;
+      appointmentType: string;
+      notes: string;
+    }) =>
+      actor!.createAppointment(
+        args.patientName,
+        args.phone,
+        args.address,
+        args.appointmentDate,
+        args.appointmentTime,
+        args.appointmentType,
+        args.notes,
+      ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["appointments"] }),
+  });
+}
+
+export function useDeleteAppointment() {
+  const { actor } = useActor();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: bigint) => actor!.deleteAppointment(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["appointments"] }),
+  });
+}
+
+export type { Appointment, Report, Template };

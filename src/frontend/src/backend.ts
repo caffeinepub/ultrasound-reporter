@@ -89,6 +89,17 @@ export class ExternalBlob {
         return this;
     }
 }
+export interface Appointment {
+    id: bigint;
+    createdAt: bigint;
+    appointmentDate: string;
+    appointmentTime: string;
+    appointmentType: string;
+    address: string;
+    notes: string;
+    patientName: string;
+    phone: string;
+}
 export interface Report {
     id: bigint;
     patientAge: string;
@@ -115,27 +126,59 @@ export interface Template {
     examType: string;
 }
 export interface backendInterface {
-    createReport(patientName: string, patientAge: string, patientGender: string, examDate: string, referringDoctor: string, examType: string, indication: string, technique: string, findings: string, impression: string, isNormal: boolean): Promise<bigint>;
+    createAppointment(patientName: string, phone: string, address: string, appointmentDate: string, appointmentTime: string, appointmentType: string, notes: string): Promise<bigint>;
+    createReview(patientName: string, patientAge: string, patientGender: string, examDate: string, referringDoctor: string, examType: string, indication: string, technique: string, findings: string, impression: string, isNormal: boolean): Promise<bigint>;
+    deleteAppointment(id: bigint): Promise<void>;
     deleteReport(id: bigint): Promise<void>;
+    getAppointment(id: bigint): Promise<Appointment>;
     getReport(id: bigint): Promise<Report>;
     getTemplate(id: bigint): Promise<Template>;
     getTemplates(): Promise<Array<Template>>;
+    listAppointments(): Promise<Array<Appointment>>;
     listReports(): Promise<Array<Report>>;
     updateReport(id: bigint, patientName: string, patientAge: string, patientGender: string, examDate: string, referringDoctor: string, examType: string, indication: string, technique: string, findings: string, impression: string, isNormal: boolean): Promise<void>;
 }
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
-    async createReport(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: string, arg7: string, arg8: string, arg9: string, arg10: boolean): Promise<bigint> {
+    async createAppointment(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: string): Promise<bigint> {
         if (this.processError) {
             try {
-                const result = await this.actor.createReport(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+                const result = await this.actor.createAppointment(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.createReport(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+            const result = await this.actor.createAppointment(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+            return result;
+        }
+    }
+    async createReview(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: string, arg7: string, arg8: string, arg9: string, arg10: boolean): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.createReview(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.createReview(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+            return result;
+        }
+    }
+    async deleteAppointment(arg0: bigint): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.deleteAppointment(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.deleteAppointment(arg0);
             return result;
         }
     }
@@ -150,6 +193,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.deleteReport(arg0);
+            return result;
+        }
+    }
+    async getAppointment(arg0: bigint): Promise<Appointment> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAppointment(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAppointment(arg0);
             return result;
         }
     }
@@ -192,6 +249,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.getTemplates();
+            return result;
+        }
+    }
+    async listAppointments(): Promise<Array<Appointment>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.listAppointments();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.listAppointments();
             return result;
         }
     }

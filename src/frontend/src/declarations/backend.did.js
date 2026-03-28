@@ -8,6 +8,17 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
+export const Appointment = IDL.Record({
+  'id' : IDL.Nat,
+  'createdAt' : IDL.Int,
+  'appointmentDate' : IDL.Text,
+  'appointmentTime' : IDL.Text,
+  'appointmentType' : IDL.Text,
+  'address' : IDL.Text,
+  'notes' : IDL.Text,
+  'patientName' : IDL.Text,
+  'phone' : IDL.Text,
+});
 export const Report = IDL.Record({
   'id' : IDL.Nat,
   'patientAge' : IDL.Text,
@@ -35,7 +46,12 @@ export const Template = IDL.Record({
 });
 
 export const idlService = IDL.Service({
-  'createReport' : IDL.Func(
+  'createAppointment' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [IDL.Nat],
+      [],
+    ),
+  'createReview' : IDL.Func(
       [
         IDL.Text,
         IDL.Text,
@@ -52,10 +68,13 @@ export const idlService = IDL.Service({
       [IDL.Nat],
       [],
     ),
+  'deleteAppointment' : IDL.Func([IDL.Nat], [], []),
   'deleteReport' : IDL.Func([IDL.Nat], [], []),
+  'getAppointment' : IDL.Func([IDL.Nat], [Appointment], ['query']),
   'getReport' : IDL.Func([IDL.Nat], [Report], ['query']),
   'getTemplate' : IDL.Func([IDL.Nat], [Template], ['query']),
   'getTemplates' : IDL.Func([], [IDL.Vec(Template)], ['query']),
+  'listAppointments' : IDL.Func([], [IDL.Vec(Appointment)], ['query']),
   'listReports' : IDL.Func([], [IDL.Vec(Report)], ['query']),
   'updateReport' : IDL.Func(
       [
@@ -80,6 +99,17 @@ export const idlService = IDL.Service({
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
+  const Appointment = IDL.Record({
+    'id' : IDL.Nat,
+    'createdAt' : IDL.Int,
+    'appointmentDate' : IDL.Text,
+    'appointmentTime' : IDL.Text,
+    'appointmentType' : IDL.Text,
+    'address' : IDL.Text,
+    'notes' : IDL.Text,
+    'patientName' : IDL.Text,
+    'phone' : IDL.Text,
+  });
   const Report = IDL.Record({
     'id' : IDL.Nat,
     'patientAge' : IDL.Text,
@@ -107,7 +137,12 @@ export const idlFactory = ({ IDL }) => {
   });
   
   return IDL.Service({
-    'createReport' : IDL.Func(
+    'createAppointment' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Nat],
+        [],
+      ),
+    'createReview' : IDL.Func(
         [
           IDL.Text,
           IDL.Text,
@@ -124,10 +159,13 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Nat],
         [],
       ),
+    'deleteAppointment' : IDL.Func([IDL.Nat], [], []),
     'deleteReport' : IDL.Func([IDL.Nat], [], []),
+    'getAppointment' : IDL.Func([IDL.Nat], [Appointment], ['query']),
     'getReport' : IDL.Func([IDL.Nat], [Report], ['query']),
     'getTemplate' : IDL.Func([IDL.Nat], [Template], ['query']),
     'getTemplates' : IDL.Func([], [IDL.Vec(Template)], ['query']),
+    'listAppointments' : IDL.Func([], [IDL.Vec(Appointment)], ['query']),
     'listReports' : IDL.Func([], [IDL.Vec(Report)], ['query']),
     'updateReport' : IDL.Func(
         [

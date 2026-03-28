@@ -5,7 +5,9 @@ import Nat "mo:core/Nat";
 import Order "mo:core/Order";
 import Runtime "mo:core/Runtime";
 import Time "mo:core/Time";
+import Migration "migration";
 
+(with migration = Migration.run)
 actor {
   type Report = {
     id : Nat;
@@ -38,6 +40,24 @@ actor {
     technique : Text;
     findings : Text;
     impression : Text;
+  };
+
+  type Appointment = {
+    id : Nat;
+    patientName : Text;
+    phone : Text;
+    address : Text;
+    appointmentDate : Text;
+    appointmentTime : Text;
+    appointmentType : Text;
+    notes : Text;
+    createdAt : Int;
+  };
+
+  module Appointment {
+    public func compareByCreatedAt(a1 : Appointment, a2 : Appointment) : Order.Order {
+      Int.compare(a2.createdAt, a1.createdAt);
+    };
   };
 
   let templates : [Template] = [
@@ -93,7 +113,6 @@ actor {
 
   let reports = Map.empty<Nat, Report>();
 
-  // Restore from stable storage on upgrade
   do {
     for ((k, v) in stableReportEntries.vals()) {
       reports.add(k, v);
@@ -101,12 +120,25 @@ actor {
     };
   };
 
+  stable var nextAppointmentId : Nat = 1;
+  stable var stableAppointmentEntries : [(Nat, Appointment)] = [];
+  let appointments = Map.empty<Nat, Appointment>();
+
+  do {
+    for ((k, v) in stableAppointmentEntries.vals()) {
+      appointments.add(k, v);
+      if (k >= nextAppointmentId) { nextAppointmentId := k + 1 };
+    };
+  };
+
   system func preupgrade() {
     stableReportEntries := reports.entries().toArray();
+    stableAppointmentEntries := appointments.entries().toArray();
   };
 
   system func postupgrade() {
     stableReportEntries := [];
+    stableAppointmentEntries := [];
   };
 
   public shared ({ caller }) func createReport(
@@ -207,5 +239,47 @@ actor {
       if (template.id == id) { return template };
     };
     Runtime.trap("Template not found");
+  };
+
+  public shared ({ caller }) func createAppointment(
+    patientName : Text,
+    phone : Text,
+    address : Text,
+    appointmentDate : Text,
+    appointmentTime : Text,
+    appointmentType : Text,
+    notes : Text,
+  ) : async Nat {
+    let id = nextAppointmentId;
+    let appointment : Appointment = {
+      id;
+      patientName;
+      phone;
+      address;
+      appointmentDate;
+      appointmentTime;
+      appointmentType;
+      notes;
+      createdAt = Time.now();
+    };
+    appointments.add(id, appointment);
+    nextAppointmentId += 1;
+    id;
+  };
+
+  public query ({ caller }) func getAppointment(id : Nat) : async Appointment {
+    switch (appointments.get(id)) {
+      case (null) { Runtime.trap("Appointment not found") };
+      case (?apt) { apt };
+    };
+  };
+
+  public query ({ caller }) func listAppointments() : async [Appointment] {
+    appointments.values().toArray().sort(Appointment.compareByCreatedAt);
+  };
+
+  public shared ({ caller }) func deleteAppointment(id : Nat) : async () {
+    if (not appointments.containsKey(id)) { Runtime.trap("Appointment not found") };
+    appointments.remove(id);
   };
 };

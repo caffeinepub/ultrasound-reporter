@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { Appointments } from "./components/Appointments";
 import { Dashboard } from "./components/Dashboard";
 import { Header } from "./components/Header";
 import { ReportForm } from "./components/ReportForm";
@@ -17,6 +18,7 @@ type View =
   | "new-report"
   | "edit-report"
   | "view-report"
+  | "appointments"
   | "settings";
 
 const VIEW_TITLES: Record<View, string> = {
@@ -24,8 +26,25 @@ const VIEW_TITLES: Record<View, string> = {
   "new-report": "New Report",
   "edit-report": "Edit Report",
   "view-report": "View Report",
+  appointments: "Appointments",
   settings: "Settings",
 };
+
+function DisclaimerFooter() {
+  return (
+    <footer
+      className="print:hidden border-t border-border/50 py-3 px-6 text-center"
+      data-ocid="app.footer"
+    >
+      <p className="text-xs text-muted-foreground leading-relaxed">
+        The above mentioned findings are for Fatima Medicare clinic use only. It
+        is not a concluding ultrasound document and is not valid for any court
+        of law or elsewhere. The findings must be correlated with lab data and
+        clinical judgment.
+      </p>
+    </footer>
+  );
+}
 
 function AppInner() {
   const [view, setView] = useState<View>("dashboard");
@@ -93,11 +112,11 @@ function AppInner() {
   // Share mode: fullscreen view without sidebar
   if (shareMode) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background flex flex-col">
         {shareLoading || !selectedReport ? (
           <div
             data-ocid="share.loading_state"
-            className="flex items-center justify-center min-h-screen"
+            className="flex items-center justify-center flex-1"
           >
             <div className="text-center">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-4" />
@@ -105,13 +124,16 @@ function AppInner() {
             </div>
           </div>
         ) : (
-          <ViewReport
-            report={selectedReport}
-            onBack={handleBack}
-            onEdit={handleEditReport}
-            shareMode
-          />
+          <div className="flex-1">
+            <ViewReport
+              report={selectedReport}
+              onBack={handleBack}
+              onEdit={handleEditReport}
+              shareMode
+            />
+          </div>
         )}
+        <DisclaimerFooter />
         <Toaster />
       </div>
     );
@@ -156,8 +178,10 @@ function AppInner() {
               onEdit={handleEditReport}
             />
           )}
+          {view === "appointments" && <Appointments />}
           {view === "settings" && <Settings />}
         </div>
+        <DisclaimerFooter />
       </main>
 
       <Toaster />

@@ -10,6 +10,17 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export interface Appointment {
+  'id' : bigint,
+  'createdAt' : bigint,
+  'appointmentDate' : string,
+  'appointmentTime' : string,
+  'appointmentType' : string,
+  'address' : string,
+  'notes' : string,
+  'patientName' : string,
+  'phone' : string,
+}
 export interface Report {
   'id' : bigint,
   'patientAge' : string,
@@ -36,7 +47,11 @@ export interface Template {
   'examType' : string,
 }
 export interface _SERVICE {
-  'createReport' : ActorMethod<
+  'createAppointment' : ActorMethod<
+    [string, string, string, string, string, string, string],
+    bigint
+  >,
+  'createReview' : ActorMethod<
     [
       string,
       string,
@@ -52,10 +67,13 @@ export interface _SERVICE {
     ],
     bigint
   >,
+  'deleteAppointment' : ActorMethod<[bigint], undefined>,
   'deleteReport' : ActorMethod<[bigint], undefined>,
+  'getAppointment' : ActorMethod<[bigint], Appointment>,
   'getReport' : ActorMethod<[bigint], Report>,
   'getTemplate' : ActorMethod<[bigint], Template>,
   'getTemplates' : ActorMethod<[], Array<Template>>,
+  'listAppointments' : ActorMethod<[], Array<Appointment>>,
   'listReports' : ActorMethod<[], Array<Report>>,
   'updateReport' : ActorMethod<
     [
